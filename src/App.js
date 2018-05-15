@@ -118,11 +118,13 @@ class App extends Component {
             return resolve({})
           }
 
-          const { base64 } = data
+          const { mimeType, base64 } = data
+          const ext = mimeType.split('/')
           const pathName = path.basename(url, path.extname(url))
           resolve({
             name: `${$index}-${pathName}`,
-            image: base64
+            image: base64,
+            ext: ext[ext.length - 1]
           })
         })
       }))
@@ -133,7 +135,7 @@ class App extends Component {
       const img = zip.folder(fileName)
       items.forEach(item => {
         if (item.name) {
-          img.file(`${item.name}.png`, item.image, {base64: true})
+          img.file(`${item.name}.${item.ext}`, item.image, {base64: true})
         }
       })
 
